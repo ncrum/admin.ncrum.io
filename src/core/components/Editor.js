@@ -104,7 +104,14 @@ class MyEditor extends Component {
       __html : marked(decodeURIComponent(body))
     }
 
-    let height = (this.refs.editor ? this.refs.editor.scrollHeight : 50) - 20//body ? body.split('\n').length * 20 + 20 : null
+    let height;
+    if (this.refs.editor) {
+      height = this.refs.editor.scrollHeight - 20
+    } else if (this.props.body) {
+      height = this.props.body.split('\n').length - 20
+    } else {
+      height = 50
+    }
 
 
     return (
