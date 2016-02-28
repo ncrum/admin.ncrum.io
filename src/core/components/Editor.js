@@ -52,6 +52,9 @@ class MyEditor extends Component {
     }
     if (nextProps.post && nextProps.post.body && !isFetching) {
       this.state = nextProps.post
+      if (this.state.body) {
+        this.state.body = decodeURIComponent(this.state.body)
+      }
     }
   }
 

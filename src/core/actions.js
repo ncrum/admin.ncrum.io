@@ -29,22 +29,35 @@ export function pollAlert() {
 
 export function flashAlert(message, style) {
   return (dispatch, getState) =>  {
-    const time = Date.now()
-    dispatch(alertMessage(message, style, time))
-    let promise = new Promise(function(resolve, reject) {
-      function alertLoop() {
-        const {alerts} = getState()
-        if (alerts.messages[0].time === time) {
-          resolve()
-        } else {
-          setTimeout(alertLoop, 1000)
-        }
-      }
+    const time = 2000;
 
-      setTimeout(alertLoop, 1000)
-    }).then(function() {
-      setTimeout(() => dispatch(pollAlert()), 1000)
-    })
+    const {alerts} = getState()
+
+    dispatch(alertMessage(message, style, time))
+
+    // if we are adding our first message to the queue, then we need to begin our alert loop
+    if (alerts.messages.length == 0) {
+      return new Promise(function(resolve, reject) {
+        function alertLoop() {
+          const {alerts} = getState()
+
+          if (alerts.messages.length > 0) {
+            const newAlert = alerts.messages[0]
+
+            setTimeout(() => {
+              dispatch(pollAlert())
+              alertLoop()
+            }, newAlert.time)
+          } else {
+            resolve()
+          }
+        }
+
+        alertLoop()
+      }).then(function() {
+        // alert message queue empty
+      })
+    }
   }
 }
 
