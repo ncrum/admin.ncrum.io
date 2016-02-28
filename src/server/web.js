@@ -31,7 +31,6 @@ export default function(app) {
     bundle = watchify(bundle)
     router.get('/bundle.js', wreq(bundle))
   } else {
-    console.log('production')
     app.use(serve(path.join(__dirname, '../site')))
   }
 

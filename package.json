@@ -47,7 +47,7 @@
   },
   "scripts": {
     "develop": "sudo nodemon --ignore src/site/ --ignore src/core/ --exec babel-node -- src/server/server.js",
-    "build": "babel src -d build && cp -r src/site/styles build/site/styles",
+    "build": "babel src -d build && cp -r src/site/styles build/site/styles && browserify -r react -r react-router -r react-redux -r react-router-redux -r redux -r redux-thunk -t [ babelify --presets [ react es2015 stage-2 ] ] build/site/index.js -o build/site/bundle.js",
     "clean": "rm -rf build && mkdir build",
     "prestart": "npm install --dev && npm run clean && npm run build",
     "start": "node build/server/server.js"
