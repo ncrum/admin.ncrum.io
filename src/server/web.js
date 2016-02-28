@@ -3,6 +3,7 @@ import Router from 'koa-router'
 import wreq     from 'koa-watchify'
 import watchify from 'watchify'
 import browserify from 'browserify'
+import serve from 'koa-static'
 import path     from 'path'
 
 import React from 'react'
@@ -17,22 +18,22 @@ import reducers from '../core/reducers'
 import getRoutes from '../core/root'
 
 export default function(app) {
-
-  var bundle = browserify({
-    entries: [path.join(__dirname, '../site/index.js')],
-    fullPaths: true,
-    packageCache: {},
-    cache: {},
-    transform: [['babelify', { presets: ['es2015', 'react', 'stage-2']}]]
-  })
-
-  if ('production' != process.env.NODE_ENV) {
-    bundle = watchify(bundle)
-  }
-
   const router = new Router()
 
-  router.get('/bundle.js', wreq(bundle))
+  if ('production' != process.env.NODE_ENV) {
+    var bundle = browserify({
+      entries: [path.join(__dirname, '../site/index.js')],
+      fullPaths: true,
+      packageCache: {},
+      cache: {},
+      transform: [['babelify', { presets: ['es2015', 'react', 'stage-2']}]]
+    })
+    bundle = watchify(bundle)
+    router.get('/bundle.js', wreq(bundle))
+  } else {
+    console.log('production')
+    app.use(serve(path.join(__dirname, '../site')))
+  }
 
   function renderHtml(html, initialState) {
     return new Promise(function(resolve, reject) {
