@@ -1,0 +1,83 @@
+@import (css) 'markdown.css';
+
+section.base {
+  margin: 0 10%;
+  width: 80%;
+  height: 300px;
+}
+
+.editor-root, .preview-root {
+  vertical-align: top;
+  display: inline-block;
+  width: 100%;
+
+  @media (min-width: 1000px) {
+    width: 48%;
+    height: auto;
+    margin: 0 1%;
+  }
+
+}
+
+.editor-root {
+  border: 1px solid #ddd;
+  margin: -1px;
+}
+
+.editor-wrapper, .preview-wrapper {
+  padding: 15px;
+
+  input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: inline-block;
+    line-height: 20px;
+    font-size: 16px;
+    padding: 8px;
+    width: 400px;
+    outline-color: #2faf2f;
+
+    float: left;
+  }
+
+  button {
+    display: inline-block;
+    color: #2faf2f;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 1px;
+    padding: 8px 20px;
+    font-size: 14px;
+    outline-color: #2faf2f;
+
+    float: right;
+  }
+
+  button:hover {
+    background-color: darken(#fff, 2%);
+    cursor: pointer;
+    border-bottom: 2px solid #2faf2f;
+    margin-bottom: -1px;
+  }
+
+  textarea {
+    line-height: 20px;
+    font-size: 15px;
+    margin-top: 15px;
+    border: 0px;
+    border-top: 1px solid #ddd;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    padding: 10px 2%;
+    width: 96%;
+  }
+
+  .markdown-body {
+    padding: 0 1%;
+  }
+}
+
+.preview-root {
+  margin-top: 60px;
+}
