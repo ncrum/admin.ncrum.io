@@ -108,7 +108,7 @@ class MyEditor extends Component {
     if (this.refs.editor) {
       height = this.refs.editor.scrollHeight - 20
     } else if (this.props.body) {
-      height = this.props.body.split('\n').length - 20
+      height = this.props.body.split('\n').length + 20
     } else {
       height = 50
     }
