@@ -118,8 +118,6 @@ export default function(app) {
 
       this.body = yield renderHtml(html, store.getState())
     }
-
-    // this.body = yield renderHtml('', {})
   })
 
   app.use(router.middleware())

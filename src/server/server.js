@@ -37,7 +37,6 @@ app.use(function *(next){
 const creds = { name: process.env.ADMIN_USER || 'admin', pass: process.env.ADMIN_PASS || 'admin' }
 app.use(auth(creds))
 
-
 web(app);
 
 app.listen(process.env.PORT || 3000)

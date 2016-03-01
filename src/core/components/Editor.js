@@ -3,6 +3,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchPostIfNeeded, updatePost, flashAlert} from '../actions'
+import {Link} from 'react-router'
 
 import marked from 'marked'
 import highlight from 'highlight.js'
@@ -39,8 +40,15 @@ class MyEditor extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, params } = this.props
+    const { dispatch, params, post } = this.props
     dispatch(fetchPostIfNeeded(params.title.removeDashes()))
+
+
+    const {_id, title, body} = post
+
+    this.setState({
+      _id, title, body: body ? decodeURIComponent(body) : ''
+    })
 
     document.addEventListener("keydown", this.handleKeydown, false)
   }
@@ -50,12 +58,12 @@ class MyEditor extends Component {
     if (nextProps.post && nextProps.post.title !== params.title.removeDashes() && !isFetching) {
       dispatch(fetchPostIfNeeded(params.title.removeDashes()))
     }
-    if (nextProps.post && nextProps.post.body && !isFetching) {
-      this.state = nextProps.post
-      if (this.state.body) {
-        this.state.body = decodeURIComponent(this.state.body)
-      }
-    }
+
+    const {_id, title, body} = nextProps.post
+
+    this.setState({
+      _id, title, body: body ? decodeURIComponent(body) : ''
+    })
   }
 
   handleKeydown(e) {
@@ -98,24 +106,25 @@ class MyEditor extends Component {
   }
 
   render() {
-    let {body, title} = this.state
+    let {body, title} = this.state || {body: '', title: ''}
+    let decodedBody = decodeURIComponent(body || ' ')
 
     let markdown = {
-      __html : marked(decodeURIComponent(body))
+      __html : marked(decodedBody)
     }
 
-    let height;
+    let height = 50;
     if (this.refs.editor) {
       height = this.refs.editor.scrollHeight - 20
-    } else if (this.props.body) {
-      height = this.props.body.split('\n').length + 20
-    } else {
-      height = 50
     }
 
+    if (decodedBody) {
+      height = Math.max(decodedBody.split('\n').length * 27 + 20, height)
+    }
 
     return (
       <div>
+        <Link className="editor-back-btn" to="/list">{'< Back'}</Link>
         <div className="editor-root">
           <div className="editor-wrapper">
             <input type="text" value={title} onChange={this.onChangeTitle}/>
@@ -124,8 +133,9 @@ class MyEditor extends Component {
               style={{
                 height: height
               }}
-              value={decodeURIComponent(body)}
+              value={decodedBody}
               onChange={this.onChange}
+              placeholder="Tell a story..."
               ref="editor">
             </textarea>
           </div>

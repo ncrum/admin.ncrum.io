@@ -1,9 +1,31 @@
 @import (css) 'markdown.css';
 
+@primary: #2faf2f;
+@secondary: #2d2e2d;
+
+li {
+  list-style: none !important;
+}
+
+a {
+  text-decoration: none;
+  color: @primary;
+}
+
+a.active, a:active, a:hover {
+  color: @secondary;
+}
+
 section.base {
   margin: 0 10%;
   width: 80%;
   height: 300px;
+}
+
+.editor-back-btn {
+  display: block;
+  font-size: 18px;
+  padding: 10px 10px;
 }
 
 .editor-root, .preview-root {
