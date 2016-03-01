@@ -50,7 +50,11 @@ class MyEditor extends Component {
       _id, title, body: body ? decodeURIComponent(body) : ''
     })
 
-    document.addEventListener("keydown", this.handleKeydown, false)
+    document.addEventListener('keydown', this.handleKeydown, false)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeydown, false)
   }
 
   componentWillReceiveProps(nextProps) {
